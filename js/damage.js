@@ -32,14 +32,29 @@ function calculateDamage({ skillMultiplier = 1.0, forceCrit = false, forceUltra 
 
   // ── 1. Effective ATK ────────────────────────────────────────────────────────
   const eb = computeEquipBonuses(equipment);
-  const flatAtk = s.honing.baseAtk + s.equipment.baseAtk + s.buff.baseAtkFlat + eb.flatAtk;
+  const flatAtk =
+    s.honing.baseAtk +
+    s.equipment.baseAtk +
+    s.buff.baseAtkFlat +
+    s.bloodEnergy.baseAtk +
+    s.skill.skinsBaseAtk +
+    eb.flatAtk;
+  const offeringAtkPct =
+    s.offering.temple1AtkIncrease +
+    s.offering.temple2AtkIncrease +
+    s.offering.temple3AtkIncrease;
   const totalAtkPct =
     s.mastery.atkIncrease +
+    s.herb.atkIncrease +
     s.equipment.atkIncrease +
     s.buff.atkIncrease +
     s.buff.additionalAtkIncrease +
     s.bloodEnergy.atkIncrease +
     s.promotion.atkIncrease +
+    s.trait.atkIncrease +
+    s.innerCore.atkIncrease +
+    offeringAtkPct +
+    s.skill.skinsAtkIncrease +
     eb.atkPct;
   const effectiveAtk = Math.round(flatAtk * (1 + totalAtkPct / 100));
 

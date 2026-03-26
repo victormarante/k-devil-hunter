@@ -6,8 +6,9 @@
  * Screenshots were taken at Lv.275, Sect: 4TheWin, Server: Global.
  *
  * Stat categories mirror the in-game tabs:
- *   Honing → Mastery → Equipment → Skill Collection → Buff →
- *   Blood Energy → Promotion → Monster Collection
+ *   Honing → Mastery → Herb → Equipment → Skill Collection → Buff →
+ *   Blood Energy → Promotion → Trait → Inner Core → Offering →
+ *   Skill → Monster Collection
  */
 
 /** Links to the game on official storefronts */
@@ -109,11 +110,121 @@ const CHARACTER_STATS = {
   },
 
   /**
+   * Herb – stat bonuses obtained through the Herb system.
+   */
+  herb: {
+    atkIncrease:                0, // %
+    hpIncrease:                 0, // %
+    recoveryIncrease:           0, // %
+    additionalDmg:              0, // %
+    additionalDmgToBoss:        0, // %
+    additionalDmgToNormal:      0, // %
+    additionalPhysicalDmg:      0, // %
+    additionalMagicDmg:         0, // %
+    additionalFireDmg:          0, // %
+    additionalWaterDmg:         0, // %
+    additionalWindDmg:          0, // %
+    additionalLightningDmg:     0, // %
+    additionalEarthDmg:         0, // %
+    brassCoinGainIncrease:      0, // %
+    expGainIncrease:            0, // %
+    weaponDropRateIncrease:     0, // %
+    robeDropRateIncrease:       0, // %
+    ringDropRateIncrease:       0, // %
+    moneyPouchDropRateIncrease: 0, // %
+  },
+
+  /**
    * Blood Energy – bonuses from the Blood Energy upgrade system.
+   * Each promotion unlock lets you roll up to 8 stat lines from the pool below.
+   * Enter the total accumulated value for each stat type.
    */
   bloodEnergy: {
-    atkIncrease:   90, // %
-    magicDmg:       5, // %
+    baseAtk:               0,
+    atkIncrease:           90, // %
+    additionalDmg:          0, // %
+    additionalDmgToBoss:    0, // %
+    additionalDmgToNormal:  0, // %
+    additionalDmgToRealm:   0, // %
+    baseHp:                 0,
+    hpIncrease:             0, // %
+    recoveryOnAutoAttack:   0,
+    recoveryIncrease:       0, // %
+  },
+
+  /**
+   * Trait – tree of stats allocated through accumulated trait points.
+   * Enter the total aggregated value for each stat.
+   */
+  trait: {
+    recoveryIncrease: 0, // %
+    hpIncrease:       0, // %
+    atkIncrease:      0, // %
+    spellDmg:         0, // %
+    talismanDmg:      0, // %
+    spiritDmg:        0, // %
+    autoAttackDmg:    0, // %
+    divineBeastDmg:   0, // %
+  },
+
+  /**
+   * Inner Core – percentage increases of ATK, HP and Recovery plus DMG Reduction.
+   */
+  innerCore: {
+    atkIncrease:      0, // %
+    hpIncrease:       0, // %
+    recoveryIncrease: 0, // %
+    dmgReduction:     0, // %
+  },
+
+  /**
+   * Offering – three Temples, each providing the same four stat bonuses.
+   * Stats are stored flat with a temple prefix for simple key lookup.
+   */
+  offering: {
+    temple1AtkIncrease:      0, // %
+    temple1HpIncrease:       0, // %
+    temple1RecoveryIncrease: 0, // %
+    temple1AutoAttackDmg:    0, // %
+    temple2AtkIncrease:      0, // %
+    temple2HpIncrease:       0, // %
+    temple2RecoveryIncrease: 0, // %
+    temple2AutoAttackDmg:    0, // %
+    temple3AtkIncrease:      0, // %
+    temple3HpIncrease:       0, // %
+    temple3RecoveryIncrease: 0, // %
+    temple3AutoAttackDmg:    0, // %
+  },
+
+  /**
+   * Skill – bonuses from equipable Spells, Talismans, Spirits, Divine Beasts
+   * and Skins (Holding effects).
+   * Skins follow the same roll mechanic as Blood Energy; enter the aggregated total.
+   */
+  skill: {
+    // Spells
+    additionalSpellDmg:         0, // %
+    // Talisman
+    additionalTalismanDmg:      0, // %
+    // Spirits
+    additionalSpiritDmg:        0, // %
+    // Divine Beasts
+    divineBeastPhysicalDmg:     0, // %
+    divineBeastHpIncrease:      0, // %
+    divineBeastRecoveryIncrease:0, // %
+    divineBeastBrassCoinGain:   0, // %
+    divineBeastExpGain:         0, // %
+    // Skins
+    skinsBaseAtk:                0,
+    skinsAtkIncrease:            0, // %
+    skinsAdditionalDmg:          0, // %
+    skinsAdditionalDmgToBoss:    0, // %
+    skinsAdditionalDmgToNormal:  0, // %
+    skinsAdditionalDmgToRealm:   0, // %
+    skinsBaseHp:                 0,
+    skinsHpIncrease:             0, // %
+    skinsRecoveryOnAutoAttack:   0,
+    skinsRecoveryIncrease:       0, // %
   },
 
   /**
@@ -224,14 +335,29 @@ function computeEquipBonuses(equipment) {
 function getEffectiveAtk(stats, equipment) {
   const s = stats || CHARACTER_STATS;
   const eb = computeEquipBonuses(equipment);
-  const flatAtk = s.honing.baseAtk + s.equipment.baseAtk + s.buff.baseAtkFlat + eb.flatAtk;
+  const flatAtk =
+    s.honing.baseAtk +
+    s.equipment.baseAtk +
+    s.buff.baseAtkFlat +
+    s.bloodEnergy.baseAtk +
+    s.skill.skinsBaseAtk +
+    eb.flatAtk;
+  const offeringAtkPct =
+    s.offering.temple1AtkIncrease +
+    s.offering.temple2AtkIncrease +
+    s.offering.temple3AtkIncrease;
   const totalAtkPct =
     s.mastery.atkIncrease +
+    s.herb.atkIncrease +
     s.equipment.atkIncrease +
     s.buff.atkIncrease +
     s.buff.additionalAtkIncrease +
     s.bloodEnergy.atkIncrease +
     s.promotion.atkIncrease +
+    s.trait.atkIncrease +
+    s.innerCore.atkIncrease +
+    offeringAtkPct +
+    s.skill.skinsAtkIncrease +
     eb.atkPct;
   return Math.round(flatAtk * (1 + totalAtkPct / 100));
 }
@@ -246,13 +372,29 @@ function getEffectiveAtk(stats, equipment) {
 function getEffectiveHp(stats, equipment) {
   const s = stats || CHARACTER_STATS;
   const eb = computeEquipBonuses(equipment);
-  const flatHp = s.honing.baseHp + s.equipment.baseHp + eb.flatHp;
+  const flatHp =
+    s.honing.baseHp +
+    s.equipment.baseHp +
+    s.bloodEnergy.baseHp +
+    s.skill.skinsBaseHp +
+    eb.flatHp;
+  const offeringHpPct =
+    s.offering.temple1HpIncrease +
+    s.offering.temple2HpIncrease +
+    s.offering.temple3HpIncrease;
   const totalHpPct =
     s.mastery.hpIncrease +
+    s.herb.hpIncrease +
     s.equipment.hpIncrease +
     s.skillCollection.hpIncrease +
     s.promotion.hpIncrease +
     s.monsterCollection.hpIncrease +
+    s.bloodEnergy.hpIncrease +
+    s.trait.hpIncrease +
+    s.innerCore.hpIncrease +
+    offeringHpPct +
+    s.skill.divineBeastHpIncrease +
+    s.skill.skinsHpIncrease +
     eb.hpPct;
   return Math.round(flatHp * (1 + totalHpPct / 100));
 }
