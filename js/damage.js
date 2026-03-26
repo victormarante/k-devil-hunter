@@ -22,20 +22,25 @@
  * @param {boolean} [opts.forceCrit]     – Force a regular critical hit
  * @param {boolean} [opts.forceUltra]    – Force an ultra critical hit
  * @param {boolean} [opts.forceNormal]   – Force a normal (no crit) hit
+ * @param {Object}  [opts.stats]         – Override stats (defaults to CHARACTER_STATS)
+ * @param {Object}  [opts.equipment]     – Override equipment items
  * @returns {Object} Damage result breakdown
  */
-function calculateDamage({ skillMultiplier = 1.0, forceCrit = false, forceUltra = false, forceNormal = false } = {}) {
-  const s = CHARACTER_STATS;
+function calculateDamage({ skillMultiplier = 1.0, forceCrit = false, forceUltra = false, forceNormal = false, stats = null, equipment = null } = {}) {
+  const s = stats || CHARACTER_STATS;
+  // computeEquipBonuses is defined in characters.js (loaded before this file).
 
   // ── 1. Effective ATK ────────────────────────────────────────────────────────
-  const flatAtk = s.honing.baseAtk + s.equipment.baseAtk + s.buff.baseAtkFlat;
+  const eb = computeEquipBonuses(equipment);
+  const flatAtk = s.honing.baseAtk + s.equipment.baseAtk + s.buff.baseAtkFlat + eb.flatAtk;
   const totalAtkPct =
     s.mastery.atkIncrease +
     s.equipment.atkIncrease +
     s.buff.atkIncrease +
     s.buff.additionalAtkIncrease +
     s.bloodEnergy.atkIncrease +
-    s.promotion.atkIncrease;
+    s.promotion.atkIncrease +
+    eb.atkPct;
   const effectiveAtk = Math.round(flatAtk * (1 + totalAtkPct / 100));
 
   // ── 2. Base hit before crits ─────────────────────────────────────────────
@@ -91,14 +96,17 @@ function calculateDamage({ skillMultiplier = 1.0, forceCrit = false, forceUltra 
  * Returns the expected min / avg / max damage range.
  *
  * @param {number} [skillMultiplier=1.0]
+ * @param {Object} [stats]     – Override stats (defaults to CHARACTER_STATS)
+ * @param {Object} [equipment] – Override equipment items
  * @returns {{ minDamage, avgDamage, maxDamage, breakdown }}
  */
-function getDamageRange(skillMultiplier = 1.0) {
-  const normal = calculateDamage({ skillMultiplier, forceNormal: true });
-  const crit   = calculateDamage({ skillMultiplier, forceCrit: true,  forceNormal: false });
-  const ultra  = calculateDamage({ skillMultiplier, forceUltra: true, forceNormal: false });
+function getDamageRange(skillMultiplier = 1.0, stats = null, equipment = null) {
+  // computeEquipBonuses is defined in characters.js (loaded before this file).
+  const normal = calculateDamage({ skillMultiplier, forceNormal: true,                    stats, equipment });
+  const crit   = calculateDamage({ skillMultiplier, forceCrit: true,  forceNormal: false, stats, equipment });
+  const ultra  = calculateDamage({ skillMultiplier, forceUltra: true, forceNormal: false, stats, equipment });
 
-  const s = CHARACTER_STATS;
+  const s = stats || CHARACTER_STATS;
   const pNormal = Math.max(0, 1 - s.honing.critRate / 100);
   const pUltra  = Math.min(1, s.honing.ultraCritRate / 100);
   const pCrit   = Math.max(0, s.honing.critRate / 100 - pUltra);

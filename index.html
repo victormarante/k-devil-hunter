@@ -41,16 +41,29 @@
         <!-- ── Character overview ────────────────────────────────────────── -->
         <section class="section">
           <h2 class="section-title">👤 Character Overview</h2>
+          <div id="profile-actions"></div>
           <div id="character-header" class="character-header"></div>
           <div id="summary-cards" class="summary-cards"></div>
+        </section>
+
+        <!-- ── Equipment Items ──────────────────────────────────────────── -->
+        <section class="section">
+          <h2 class="section-title">🗡️ Equipment Items</h2>
+          <p class="section-note">
+            Each item has an <strong>Equip Effect</strong> (active only when equipped) and a
+            <strong>Holding Effect</strong> (active as long as the item is in your inventory).
+            Toggle the checkboxes to apply the effects to your stats, and use
+            <strong>✏️ Edit Stats</strong> to set your own values.
+          </p>
+          <div id="equipment-items" class="equipment-items"></div>
         </section>
 
         <!-- ── Detailed Stats ────────────────────────────────────────────── -->
         <section class="section">
           <h2 class="section-title">📊 Detailed Stats</h2>
           <p class="section-note">
-            Stats sourced from the in-game "Detailed Stats" panel
-            (player: Marcello · Demon Hunter · Lv.275 · Sect: 4TheWin · Server: Global).
+            Stats from the active profile. Use <strong>✏️ Edit Stats</strong> above to enter your own numbers
+            (example profile: player Marcello · Demon Hunter · Lv.275 · Sect: 4TheWin · Server: Global).
           </p>
           <div id="stat-tabs" class="stat-tabs"></div>
           <div id="stat-table" class="stat-table"></div>
@@ -96,6 +109,26 @@
     <!-- Lightbox -->
     <div id="lightbox" class="lightbox" style="display:none">
       <img id="lightbox-img" src="" alt="Screenshot" />
+    </div>
+
+    <!-- Share / Import Profile Modal -->
+    <div id="profile-modal" class="modal" style="display:none">
+      <div id="profile-modal-overlay" class="modal-overlay"></div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="profile-modal-title">Share Profile</h3>
+          <button id="profile-modal-close" class="modal-close">✖</button>
+        </div>
+        <p class="modal-hint">
+          To <strong>share</strong>: copy the code below and send it to a friend.<br/>
+          To <strong>import</strong>: paste a code into the box, then click Import.
+        </p>
+        <textarea id="profile-code-ta" class="profile-code-ta" rows="4" spellcheck="false" placeholder="Paste a profile code here…"></textarea>
+        <div class="modal-actions">
+          <button class="btn btn--sm" id="profile-copy-btn">📋 Copy Code</button>
+          <button class="btn btn--sm btn--outline" id="profile-import-btn">📥 Import</button>
+        </div>
+      </div>
     </div>
 
     <!-- Scripts (order matters: data → logic → app) -->
