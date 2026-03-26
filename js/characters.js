@@ -211,7 +211,7 @@ const CHARACTER_STATS = {
     // Divine Beasts
     divineBeastPhysicalDmg:     0, // %
     divineBeastHpIncrease:      0, // %
-    divineBeastRecoveryIncrease:0, // %
+    divineBeastRecoveryIncrease: 0, // %
     divineBeastBrassCoinGain:   0, // %
     divineBeastExpGain:         0, // %
     // Skins
