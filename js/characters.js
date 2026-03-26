@@ -1,137 +1,175 @@
 /**
- * K Devil Hunter - Character Data
+ * K Devil Hunter - Game & Character Data
  *
- * Contains predefined playable characters with their base stats.
- * Stats are based on in-game character stat tabs.
+ * Character stats are based on the actual in-game "Detailed Stats" screen.
+ * "Marcello" is the player's in-game name; the character type is Demon Hunter.
+ * Screenshots were taken at Lv.275, Sect: 4TheWin, Server: Global.
+ *
+ * Stat categories mirror the in-game tabs:
+ *   Honing → Mastery → Equipment → Skill Collection → Buff →
+ *   Blood Energy → Promotion → Monster Collection
  */
 
-const CHARACTERS = [
-  {
-    id: "kael",
-    name: "Kael",
-    title: "Shadow Blade",
-    type: "Attacker",
-    element: "Dark",
-    level: 1,
-    baseStats: {
-      hp: 1200,
-      atk: 320,
-      def: 180,
-      spd: 95,
-      critRate: 15,
-      critDmg: 150,
-    },
-  },
-  {
-    id: "lyra",
-    name: "Lyra",
-    title: "Holy Sentinel",
-    type: "Tank",
-    element: "Light",
-    level: 1,
-    baseStats: {
-      hp: 2400,
-      atk: 210,
-      def: 380,
-      spd: 75,
-      critRate: 8,
-      critDmg: 130,
-    },
-  },
-  {
-    id: "zephyr",
-    name: "Zephyr",
-    title: "Storm Dancer",
-    type: "Speedster",
-    element: "Wind",
-    level: 1,
-    baseStats: {
-      hp: 1000,
-      atk: 280,
-      def: 140,
-      spd: 140,
-      critRate: 22,
-      critDmg: 175,
-    },
-  },
-  {
-    id: "mordia",
-    name: "Mordia",
-    title: "Flame Witch",
-    type: "Mage",
-    element: "Fire",
-    level: 1,
-    baseStats: {
-      hp: 900,
-      atk: 410,
-      def: 120,
-      spd: 88,
-      critRate: 18,
-      critDmg: 200,
-    },
-  },
-  {
-    id: "rex",
-    name: "Rex",
-    title: "Iron Fist",
-    type: "Brawler",
-    element: "Earth",
-    level: 1,
-    baseStats: {
-      hp: 1800,
-      atk: 290,
-      def: 260,
-      spd: 82,
-      critRate: 10,
-      critDmg: 140,
-    },
-  },
-  {
-    id: "sylvana",
-    name: "Sylvana",
-    title: "Thornweaver",
-    type: "Support",
-    element: "Nature",
-    level: 1,
-    baseStats: {
-      hp: 1100,
-      atk: 190,
-      def: 200,
-      spd: 105,
-      critRate: 12,
-      critDmg: 135,
-    },
-  },
-];
-
-/**
- * Stat growth per level for each character type.
- * These multipliers are applied to base stats when leveling up.
- */
-const LEVEL_GROWTH = {
-  Attacker: { hp: 60, atk: 18, def: 8, spd: 1.5 },
-  Tank: { hp: 120, atk: 10, def: 20, spd: 0.8 },
-  Speedster: { hp: 50, atk: 15, def: 6, spd: 3 },
-  Mage: { hp: 45, atk: 22, def: 5, spd: 1.2 },
-  Brawler: { hp: 90, atk: 14, def: 14, spd: 1 },
-  Support: { hp: 55, atk: 8, def: 10, spd: 2 },
+/** Links to the game on official storefronts */
+const GAME_LINKS = {
+  pocketgamer: "https://www.pocketgamer.com/k-devil-hunter/out-now/",
+  googlePlay:  "https://play.google.com/store/apps/details?id=com.codedragon.kdemon",
+  appStore:    "https://apps.apple.com/se/app/k-devil-hunter/id6757422245",
 };
 
 /**
- * Returns scaled stats for a character at a given level.
- * @param {Object} character - Character object
- * @param {number} level - Target level (1–100)
- * @returns {Object} Scaled stats
+ * Example character stats extracted from the in-game screenshots.
+ * Values are from Marcello's "Detailed Stats" panel at Lv.275.
+ *
+ * All percentage values are stored as plain numbers (e.g. 100 = 100%).
+ * Flat values are stored as their full integer (e.g. 30050 = 30K 50).
  */
-function getStatsAtLevel(character, level) {
-  const growth = LEVEL_GROWTH[character.type];
-  const lvlBonus = Math.max(0, level - 1);
-  return {
-    hp: Math.round(character.baseStats.hp + growth.hp * lvlBonus),
-    atk: Math.round(character.baseStats.atk + growth.atk * lvlBonus),
-    def: Math.round(character.baseStats.def + growth.def * lvlBonus),
-    spd: Math.round(character.baseStats.spd + growth.spd * lvlBonus),
-    critRate: character.baseStats.critRate,
-    critDmg: character.baseStats.critDmg,
-  };
+const CHARACTER_STATS = {
+  name: "Demon Hunter",
+  level: 275,
+  sect: "4TheWin",
+  server: "Global",
+
+  /**
+   * Honing – core combat stats gained through levelling and hunting.
+   */
+  honing: {
+    baseAtk:               30050,
+    critRate:              100,    // %
+    critDmg:               1000,   // %
+    ultraCritRate:         41,     // %
+    ultraCritDmg:          382,    // %
+    atkSpdIncrease:        93,     // %
+    baseHp:                601000,
+    recoveryOnAutoAttack:  150300,
+    brassCoinGainIncrease: 510,    // %
+    expGainIncrease:       520,    // %
+  },
+
+  /**
+   * Mastery – bonus stats from grinding mastery levels.
+   */
+  mastery: {
+    atkIncrease:              2000, // %
+    hpIncrease:               790,  // %
+    recoveryIncrease:         0,    // %
+    weaponDropRateIncrease:   0,    // %
+    robeDropRateIncrease:     0,    // %
+    ringDropRateIncrease:     0,    // %
+    moneyPouchDropRateIncrease: 0,  // %
+  },
+
+  /**
+   * Equipment – stats contributed by equipped gear.
+   */
+  equipment: {
+    atkIncrease:             675,   // %
+    hpIncrease:              170,   // %
+    recoveryIncrease:        137.5, // %
+    baseAtk:                 15800,
+    baseHp:                  160000,
+    recoveryOnAutoAttack:    34000,
+    brassCoinGainIncrease:   123.8, // %
+    expGainIncrease:         123.8, // %
+  },
+
+  /**
+   * Skill Collection – bonuses unlocked via the skill collection system.
+   */
+  skillCollection: {
+    physicalDmgIncrease:  60,  // %
+    magicDmgIncrease:     50,  // %
+    fireDmgIncrease:      50,  // %
+    waterDmgIncrease:     50,  // %
+    windDmgIncrease:      50,  // %
+    lightningDmgIncrease: 50,  // %
+    earthDmgIncrease:     50,  // %
+    hpIncrease:           220, // %
+    recoveryIncrease:     200, // %
+  },
+
+  /**
+   * Buff – additional bonuses from buff items and upgrades.
+   */
+  buff: {
+    additionalSpellDmg:    0,   // %
+    additionalTalismanDmg: 0,   // %
+    additionalSpiritDmg:   0,   // %
+    atkIncrease:           205, // %
+    brassCoinGainIncrease: 205, // %
+    recoveryIncrease:      410, // %
+    additionalSkinDmg:     5,   // %
+    baseAtkFlat:           310,
+    additionalAtkIncrease: 4,   // %
+    additionalDmg:         10,  // %
+    additionalPhysicalDmg: 28.6,// %
+    additionalMagicDmg:    28.6,// %
+    additionalFireDmg:     28.6,// %
+    additionalWaterDmg:    38.2,// %
+  },
+
+  /**
+   * Blood Energy – bonuses from the Blood Energy upgrade system.
+   */
+  bloodEnergy: {
+    atkIncrease:   90, // %
+    magicDmg:       5, // %
+  },
+
+  /**
+   * Promotion – bonuses from character promotion upgrades.
+   */
+  promotion: {
+    hpIncrease:         375, // %
+    atkIncrease:        142.8,// %
+    recoveryIncrease:   50,  // %
+  },
+
+  /**
+   * Monster Collection – bonuses from collecting monsters.
+   */
+  monsterCollection: {
+    hpIncrease:        51.3,  // %
+    recoveryIncrease:  162.8, // %
+  },
+};
+
+/**
+ * Returns the effective (total) ATK for the character, combining
+ * the Honing base ATK with all flat bonuses and percentage multipliers.
+ *
+ * Simplified formula used for the damage calculator:
+ *   effectiveAtk = (honingBaseAtk + equipmentBaseAtk + buffBaseAtkFlat)
+ *                  × (1 + totalAtkIncrease / 100)
+ *
+ * @returns {number} Effective ATK value
+ */
+function getEffectiveAtk() {
+  const s = CHARACTER_STATS;
+  const flatAtk = s.honing.baseAtk + s.equipment.baseAtk + s.buff.baseAtkFlat;
+  const totalAtkPct =
+    s.mastery.atkIncrease +
+    s.equipment.atkIncrease +
+    s.buff.atkIncrease +
+    s.buff.additionalAtkIncrease +
+    s.bloodEnergy.atkIncrease +
+    s.promotion.atkIncrease;
+  return Math.round(flatAtk * (1 + totalAtkPct / 100));
+}
+
+/**
+ * Returns the effective (total) HP.
+ *
+ * @returns {number} Effective HP value
+ */
+function getEffectiveHp() {
+  const s = CHARACTER_STATS;
+  const flatHp = s.honing.baseHp + s.equipment.baseHp;
+  const totalHpPct =
+    s.mastery.hpIncrease +
+    s.equipment.hpIncrease +
+    s.skillCollection.hpIncrease +
+    s.promotion.hpIncrease +
+    s.monsterCollection.hpIncrease;
+  return Math.round(flatHp * (1 + totalHpPct / 100));
 }

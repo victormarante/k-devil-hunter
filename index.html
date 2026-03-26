@@ -3,73 +3,66 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>K Devil Hunter – Character Info &amp; Damage Tool</title>
+    <title>K Devil Hunter – Character Stats &amp; Damage Tool</title>
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
     <div class="app">
+
       <!-- ── Header ──────────────────────────────────────────────────────── -->
       <header class="site-header">
-        <h1>K <span>Devil</span> Hunter</h1>
-        <p>Character Info &amp; Damage Calculator</p>
+        <div class="header-inner">
+          <div class="header-title">
+            <h1>K <span>Devil</span> Hunter</h1>
+            <p>Character Stats Reference &amp; Damage Calculator</p>
+          </div>
+          <div class="store-links">
+            <a class="store-btn store-btn--gp"
+               href="https://play.google.com/store/apps/details?id=com.codedragon.kdemon"
+               target="_blank" rel="noopener">
+              ▶ Google Play
+            </a>
+            <a class="store-btn store-btn--as"
+               href="https://apps.apple.com/se/app/k-devil-hunter/id6757422245"
+               target="_blank" rel="noopener">
+               App Store
+            </a>
+            <a class="store-btn store-btn--pg"
+               href="https://www.pocketgamer.com/k-devil-hunter/out-now/"
+               target="_blank" rel="noopener">
+              📰 Pocket Gamer
+            </a>
+          </div>
+        </div>
       </header>
 
-      <!-- ── Main Layout ─────────────────────────────────────────────────── -->
-      <main class="main-layout">
+      <main class="main-content">
 
-        <!-- ── Attacker column ──────────────────────────────────────────── -->
-        <div class="panel">
-          <h2 class="panel-title">⚔️ Attacker – Select Character</h2>
-          <div class="char-roster" id="attacker-roster"></div>
-        </div>
+        <!-- ── Character overview ────────────────────────────────────────── -->
+        <section class="section">
+          <h2 class="section-title">👤 Character Overview</h2>
+          <div id="character-header" class="character-header"></div>
+          <div id="summary-cards" class="summary-cards"></div>
+        </section>
 
-        <!-- ── Defender column ──────────────────────────────────────────── -->
-        <div class="panel">
-          <h2 class="panel-title">🛡️ Defender – Select Character</h2>
-          <div class="char-roster" id="defender-roster"></div>
-        </div>
-
-        <!-- ── Attacker stats ────────────────────────────────────────────── -->
-        <div class="panel">
-          <h2 class="panel-title">Attacker Stats</h2>
-          <div class="level-control">
-            <label for="attacker-level">Level</label>
-            <input
-              type="range"
-              id="attacker-level"
-              min="1"
-              max="100"
-              value="1"
-            />
-            <span class="level-display" id="attacker-level-display">1</span>
-          </div>
-          <div id="attacker-info">
-            <p class="placeholder">Select a character above</p>
-          </div>
-        </div>
-
-        <!-- ── Defender stats ────────────────────────────────────────────── -->
-        <div class="panel">
-          <h2 class="panel-title">Defender Stats</h2>
-          <div class="level-control">
-            <label for="defender-level">Level</label>
-            <input
-              type="range"
-              id="defender-level"
-              min="1"
-              max="100"
-              value="1"
-            />
-            <span class="level-display" id="defender-level-display">1</span>
-          </div>
-          <div id="defender-info">
-            <p class="placeholder">Select a character above</p>
-          </div>
-        </div>
+        <!-- ── Detailed Stats ────────────────────────────────────────────── -->
+        <section class="section">
+          <h2 class="section-title">📊 Detailed Stats</h2>
+          <p class="section-note">
+            Stats sourced from the in-game "Detailed Stats" panel
+            (player: Marcello · Demon Hunter · Lv.275 · Sect: 4TheWin · Server: Global).
+          </p>
+          <div id="stat-tabs" class="stat-tabs"></div>
+          <div id="stat-table" class="stat-table"></div>
+        </section>
 
         <!-- ── Damage Calculator ─────────────────────────────────────────── -->
-        <div class="panel calculator-panel">
-          <h2 class="panel-title">💥 Damage Calculator</h2>
+        <section class="section">
+          <h2 class="section-title">💥 Damage Calculator</h2>
+          <p class="section-note">
+            Estimates damage using your current stats. Based on the formula:<br>
+            <code>Effective ATK × Skill Multiplier × Crit/Ultra Crit DMG</code>
+          </p>
 
           <div class="calculator-controls">
             <label for="skill-multiplier">Skill Multiplier</label>
@@ -77,25 +70,32 @@
               type="number"
               id="skill-multiplier"
               min="0.1"
-              max="10"
+              max="20"
               step="0.1"
               value="1.0"
-              style="width: 80px"
             />
-
             <button class="btn" id="roll-damage-btn">🎲 Roll Hit</button>
           </div>
 
-          <div id="damage-result">
-            <p class="placeholder">
-              Select both an attacker and a defender to see damage estimates.
-            </p>
-          </div>
-
+          <div id="damage-result"></div>
           <div id="roll-result" class="roll-result" style="display:none"></div>
-        </div>
+        </section>
+
+        <!-- ── Screenshot Gallery ─────────────────────────────────────────── -->
+        <section class="section">
+          <h2 class="section-title">📸 In-Game Screenshots</h2>
+          <p class="section-note">
+            Actual in-game stat screens. Click any image to enlarge.
+          </p>
+          <div id="screenshot-gallery" class="screenshot-gallery"></div>
+        </section>
 
       </main>
+    </div>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox" style="display:none">
+      <img id="lightbox-img" src="" alt="Screenshot" />
     </div>
 
     <!-- Scripts (order matters: data → logic → app) -->
