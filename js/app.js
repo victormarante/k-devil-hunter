@@ -107,6 +107,32 @@ const STAT_CATEGORIES = [
     ],
   },
   {
+    id: "herb",
+    label: "Herb",
+    icon: "🌿",
+    rows: [
+      { key: "atkIncrease",                label: "ATK Increase",                   fmt: fmtPct },
+      { key: "hpIncrease",                 label: "HP Increase",                    fmt: fmtPct },
+      { key: "recoveryIncrease",           label: "Recovery Increase",              fmt: fmtPct },
+      { key: "additionalDmg",              label: "Additional DMG",                 fmt: fmtPct },
+      { key: "additionalDmgToBoss",        label: "Additional DMG to Boss",         fmt: fmtPct },
+      { key: "additionalDmgToNormal",      label: "Additional DMG to Normal",       fmt: fmtPct },
+      { key: "additionalPhysicalDmg",      label: "Additional Physical DMG",        fmt: fmtPct },
+      { key: "additionalMagicDmg",         label: "Additional Magic DMG",           fmt: fmtPct },
+      { key: "additionalFireDmg",          label: "Additional Fire DMG",            fmt: fmtPct },
+      { key: "additionalWaterDmg",         label: "Additional Water DMG",           fmt: fmtPct },
+      { key: "additionalWindDmg",          label: "Additional Wind DMG",            fmt: fmtPct },
+      { key: "additionalLightningDmg",     label: "Additional Lightning DMG",       fmt: fmtPct },
+      { key: "additionalEarthDmg",         label: "Additional Earth DMG",           fmt: fmtPct },
+      { key: "brassCoinGainIncrease",      label: "Brass Coin Gain Increase",       fmt: fmtPct },
+      { key: "expGainIncrease",            label: "EXP Gain Increase",              fmt: fmtPct },
+      { key: "weaponDropRateIncrease",     label: "Weapon Drop Rate Increase",      fmt: fmtPct },
+      { key: "robeDropRateIncrease",       label: "Robe Drop Rate Increase",        fmt: fmtPct },
+      { key: "ringDropRateIncrease",       label: "Ring Drop Rate Increase",        fmt: fmtPct },
+      { key: "moneyPouchDropRateIncrease", label: "Money Pouch Drop Rate Increase", fmt: fmtPct },
+    ],
+  },
+  {
     id: "equipment",
     label: "Equipment",
     icon: "🛡️",
@@ -163,8 +189,16 @@ const STAT_CATEGORIES = [
     label: "Blood Energy",
     icon: "🩸",
     rows: [
-      { key: "atkIncrease",  label: "ATK Increase",  fmt: fmtPct },
-      { key: "magicDmg",     label: "Magic DMG",      fmt: fmtPct },
+      { key: "baseAtk",              label: "Base ATK",                    fmt: fmt    },
+      { key: "atkIncrease",          label: "ATK Increase",                fmt: fmtPct },
+      { key: "additionalDmg",        label: "Additional DMG",              fmt: fmtPct },
+      { key: "additionalDmgToBoss",  label: "Additional DMG to Boss",      fmt: fmtPct },
+      { key: "additionalDmgToNormal",label: "Additional DMG to Normal",    fmt: fmtPct },
+      { key: "additionalDmgToRealm", label: "Additional DMG to Realm",     fmt: fmtPct },
+      { key: "baseHp",               label: "Base HP",                     fmt: fmt    },
+      { key: "hpIncrease",           label: "HP Increase",                 fmt: fmtPct },
+      { key: "recoveryOnAutoAttack", label: "Recovery on Auto-Attack",     fmt: fmt    },
+      { key: "recoveryIncrease",     label: "Recovery Increase",           fmt: fmtPct },
     ],
   },
   {
@@ -175,6 +209,84 @@ const STAT_CATEGORIES = [
       { key: "hpIncrease",        label: "HP Increase",        fmt: fmtPct },
       { key: "atkIncrease",       label: "ATK Increase",        fmt: fmtPct },
       { key: "recoveryIncrease",  label: "Recovery Increase",   fmt: fmtPct },
+    ],
+  },
+  {
+    id: "trait",
+    label: "Trait",
+    icon: "🌀",
+    rows: [
+      { key: "recoveryIncrease", label: "Recovery",          fmt: fmtPct },
+      { key: "hpIncrease",       label: "HP",                fmt: fmtPct },
+      { key: "atkIncrease",      label: "ATK",               fmt: fmtPct },
+      { key: "spellDmg",         label: "Spell DMG",         fmt: fmtPct },
+      { key: "talismanDmg",      label: "Talisman DMG",      fmt: fmtPct },
+      { key: "spiritDmg",        label: "Spirit DMG",        fmt: fmtPct },
+      { key: "autoAttackDmg",    label: "Auto-Attack DMG",   fmt: fmtPct },
+      { key: "divineBeastDmg",   label: "Divine Beast DMG",  fmt: fmtPct },
+    ],
+  },
+  {
+    id: "innerCore",
+    label: "Inner Core",
+    icon: "🔮",
+    rows: [
+      { key: "atkIncrease",      label: "ATK Increase",      fmt: fmtPct },
+      { key: "hpIncrease",       label: "HP Increase",       fmt: fmtPct },
+      { key: "recoveryIncrease", label: "Recovery Increase", fmt: fmtPct },
+      { key: "dmgReduction",     label: "DMG Reduction",     fmt: fmtPct },
+    ],
+  },
+  {
+    id: "offering",
+    label: "Offering",
+    icon: "⛩️",
+    rows: [
+      { key: null,                      label: "Temple 1",                  isHeader: true },
+      { key: "temple1AtkIncrease",      label: "ATK Increase",              fmt: fmtPct },
+      { key: "temple1HpIncrease",       label: "HP Increase",               fmt: fmtPct },
+      { key: "temple1RecoveryIncrease", label: "Recovery Increase",         fmt: fmtPct },
+      { key: "temple1AutoAttackDmg",    label: "Auto-Attack DMG",           fmt: fmtPct },
+      { key: null,                      label: "Temple 2",                  isHeader: true },
+      { key: "temple2AtkIncrease",      label: "ATK Increase",              fmt: fmtPct },
+      { key: "temple2HpIncrease",       label: "HP Increase",               fmt: fmtPct },
+      { key: "temple2RecoveryIncrease", label: "Recovery Increase",         fmt: fmtPct },
+      { key: "temple2AutoAttackDmg",    label: "Auto-Attack DMG",           fmt: fmtPct },
+      { key: null,                      label: "Temple 3",                  isHeader: true },
+      { key: "temple3AtkIncrease",      label: "ATK Increase",              fmt: fmtPct },
+      { key: "temple3HpIncrease",       label: "HP Increase",               fmt: fmtPct },
+      { key: "temple3RecoveryIncrease", label: "Recovery Increase",         fmt: fmtPct },
+      { key: "temple3AutoAttackDmg",    label: "Auto-Attack DMG",           fmt: fmtPct },
+    ],
+  },
+  {
+    id: "skill",
+    label: "Skill",
+    icon: "🎴",
+    rows: [
+      { key: null,                         label: "Spells",                   isHeader: true },
+      { key: "additionalSpellDmg",         label: "Additional Spell DMG",     fmt: fmtPct },
+      { key: null,                         label: "Talisman",                 isHeader: true },
+      { key: "additionalTalismanDmg",      label: "Additional Talisman DMG",  fmt: fmtPct },
+      { key: null,                         label: "Spirits",                  isHeader: true },
+      { key: "additionalSpiritDmg",        label: "Additional Spirit DMG",    fmt: fmtPct },
+      { key: null,                         label: "Divine Beasts",            isHeader: true },
+      { key: "divineBeastPhysicalDmg",     label: "Additional Physical DMG",  fmt: fmtPct },
+      { key: "divineBeastHpIncrease",      label: "HP Increase",              fmt: fmtPct },
+      { key: "divineBeastRecoveryIncrease",label: "Recovery Increase",        fmt: fmtPct },
+      { key: "divineBeastBrassCoinGain",   label: "Brass Coin Gain Increase", fmt: fmtPct },
+      { key: "divineBeastExpGain",         label: "EXP Gain Increase",        fmt: fmtPct },
+      { key: null,                         label: "Skins",                    isHeader: true },
+      { key: "skinsBaseAtk",               label: "Base ATK",                 fmt: fmt    },
+      { key: "skinsAtkIncrease",           label: "ATK Increase",             fmt: fmtPct },
+      { key: "skinsAdditionalDmg",         label: "Additional DMG",           fmt: fmtPct },
+      { key: "skinsAdditionalDmgToBoss",   label: "Additional DMG to Boss",   fmt: fmtPct },
+      { key: "skinsAdditionalDmgToNormal", label: "Additional DMG to Normal", fmt: fmtPct },
+      { key: "skinsAdditionalDmgToRealm",  label: "Additional DMG to Realm",  fmt: fmtPct },
+      { key: "skinsBaseHp",                label: "Base HP",                  fmt: fmt    },
+      { key: "skinsHpIncrease",            label: "HP Increase",              fmt: fmtPct },
+      { key: "skinsRecoveryOnAutoAttack",  label: "Recovery on Auto-Attack",  fmt: fmt    },
+      { key: "skinsRecoveryIncrease",      label: "Recovery Increase",        fmt: fmtPct },
     ],
   },
   {
@@ -426,7 +538,24 @@ function renderSummaryCards() {
     { icon: "💥",  label: "Crit DMG",              value: fmtPct(s.honing.critDmg) },
     { icon: "⚡",  label: "Ultra Crit Rate",       value: fmtPct(s.honing.ultraCritRate) },
     { icon: "🔥",  label: "Ultra Crit DMG",        value: fmtPct(s.honing.ultraCritDmg) },
-    { icon: "📈",  label: "Total ATK Increase",    value: fmtPct(s.mastery.atkIncrease + s.equipment.atkIncrease + s.buff.atkIncrease + s.buff.additionalAtkIncrease + s.bloodEnergy.atkIncrease + s.promotion.atkIncrease) },
+    {
+      icon: "📈",  label: "Total ATK Increase",
+      value: fmtPct(
+        s.mastery.atkIncrease +
+        s.herb.atkIncrease +
+        s.equipment.atkIncrease +
+        s.buff.atkIncrease +
+        s.buff.additionalAtkIncrease +
+        s.bloodEnergy.atkIncrease +
+        s.promotion.atkIncrease +
+        s.trait.atkIncrease +
+        s.innerCore.atkIncrease +
+        s.offering.temple1AtkIncrease +
+        s.offering.temple2AtkIncrease +
+        s.offering.temple3AtkIncrease +
+        s.skill.skinsAtkIncrease
+      ),
+    },
     { icon: "🏃",  label: "ATK SPD Increase",      value: fmtPct(s.honing.atkSpdIncrease) },
     { icon: "🪙",  label: "Brass Coin Gain",       value: fmtPct(s.honing.brassCoinGainIncrease) },
     { icon: "⭐",  label: "EXP Gain Increase",     value: fmtPct(s.honing.expGainIncrease) },
@@ -478,19 +607,23 @@ function renderStatTable(categoryId) {
         <span>${cat.icon} ${cat.label}</span>
         <span>Value</span>
       </div>
-      ${cat.rows.map(row => `
-        <div class="stat-table-row">
-          <span class="stat-table-label">${row.label}</span>
-          <input
-            class="stat-edit-input"
-            type="number"
-            step="any"
-            data-cat="${categoryId}"
-            data-key="${row.key}"
-            value="${data[row.key]}"
-          />
-        </div>
-      `).join("")}
+      ${cat.rows.map(row => {
+        if (row.isHeader) {
+          return `<div class="stat-table-group-header">${row.label}</div>`;
+        }
+        return `
+          <div class="stat-table-row">
+            <span class="stat-table-label">${row.label}</span>
+            <input
+              class="stat-edit-input"
+              type="number"
+              step="any"
+              data-cat="${categoryId}"
+              data-key="${row.key}"
+              value="${data[row.key]}"
+            />
+          </div>`;
+      }).join("")}
     `;
 
     el.querySelectorAll(".stat-edit-input").forEach(input => {
@@ -508,12 +641,16 @@ function renderStatTable(categoryId) {
         <span>${cat.icon} ${cat.label}</span>
         <span>Value</span>
       </div>
-      ${cat.rows.map(row => `
-        <div class="stat-table-row">
-          <span class="stat-table-label">${row.label}</span>
-          <span class="stat-table-value">${row.fmt(data[row.key])}</span>
-        </div>
-      `).join("")}
+      ${cat.rows.map(row => {
+        if (row.isHeader) {
+          return `<div class="stat-table-group-header">${row.label}</div>`;
+        }
+        return `
+          <div class="stat-table-row">
+            <span class="stat-table-label">${row.label}</span>
+            <span class="stat-table-value">${row.fmt(data[row.key])}</span>
+          </div>`;
+      }).join("")}
     `;
   }
 }

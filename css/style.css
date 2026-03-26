@@ -342,6 +342,17 @@ header.site-header {
   text-align: right;
 }
 
+.stat-table-group-header {
+  padding: 6px 14px 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  background: rgba(240, 180, 41, 0.07);
+  border-top: 1px solid rgba(240, 180, 41, 0.2);
+}
+
 /* ─── Damage calculator ────────────────────────────────────────────────────── */
 .calculator-controls {
   display: flex;
