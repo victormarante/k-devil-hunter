@@ -135,41 +135,124 @@ const CHARACTER_STATS = {
 };
 
 /**
+ * Individual equipment items with Equip Effect (active when the item is
+ * equipped) and Holding Effect (active whenever the item is in inventory).
+ *
+ * All numeric values default to 0 – users fill in their own numbers.
+ */
+const EQUIPMENT_ITEMS_DEFAULT = {
+  weapon: {
+    name: "Weapon", icon: "⚔️",
+    equipped: false, held: false,
+    equipEffect:   { baseAtk: 0, atkIncrease: 0 },
+    holdingEffect: { atkIncrease: 0 },
+  },
+  robe: {
+    name: "Robe", icon: "🧥",
+    equipped: false, held: false,
+    equipEffect:   { baseHp: 0, hpIncrease: 0 },
+    holdingEffect: { hpIncrease: 0 },
+  },
+  ring: {
+    name: "Ring", icon: "💍",
+    equipped: false, held: false,
+    equipEffect:   { recoveryOnAutoAttack: 0, recoveryIncrease: 0 },
+    holdingEffect: { recoveryIncrease: 0 },
+  },
+  moneyPouch: {
+    name: "Money Pouch", icon: "👝",
+    equipped: false, held: false,
+    equipEffect:   { brassCoinGainIncrease: 0, expGainIncrease: 0 },
+    holdingEffect: { movementSpdIncrease: 0, autoAttackDmgIncrease: 0 },
+  },
+};
+
+/**
+ * Aggregates the stat bonuses from all equipment items based on their
+ * current equipped / held state.
+ *
+ * @param {Object} equipment  – equipment items object (defaults to EQUIPMENT_ITEMS_DEFAULT)
+ * @returns {Object} Aggregated numeric bonuses
+ */
+function computeEquipBonuses(equipment) {
+  const eq = equipment || EQUIPMENT_ITEMS_DEFAULT;
+  const b = {
+    flatAtk: 0, atkPct: 0,
+    flatHp: 0, hpPct: 0,
+    flatRecovery: 0, recoveryPct: 0,
+    brassCoinPct: 0, expGainPct: 0,
+    movementSpdPct: 0, autoAttackDmgPct: 0,
+  };
+
+  for (const item of Object.values(eq)) {
+    if (item.equipped) {
+      const ef = item.equipEffect;
+      b.flatAtk    += ef.baseAtk              || 0;
+      b.atkPct     += ef.atkIncrease          || 0;
+      b.flatHp     += ef.baseHp               || 0;
+      b.hpPct      += ef.hpIncrease           || 0;
+      b.flatRecovery += ef.recoveryOnAutoAttack || 0;
+      b.recoveryPct  += ef.recoveryIncrease    || 0;
+      b.brassCoinPct += ef.brassCoinGainIncrease || 0;
+      b.expGainPct   += ef.expGainIncrease     || 0;
+    }
+    if (item.held) {
+      const hf = item.holdingEffect;
+      b.atkPct         += hf.atkIncrease       || 0;
+      b.hpPct          += hf.hpIncrease        || 0;
+      b.recoveryPct    += hf.recoveryIncrease  || 0;
+      b.movementSpdPct += hf.movementSpdIncrease  || 0;
+      b.autoAttackDmgPct += hf.autoAttackDmgIncrease || 0;
+    }
+  }
+  return b;
+}
+
+/**
  * Returns the effective (total) ATK for the character, combining
- * the Honing base ATK with all flat bonuses and percentage multipliers.
+ * the Honing base ATK with all flat bonuses and percentage multipliers,
+ * including any active equipment-item bonuses.
  *
  * Simplified formula used for the damage calculator:
- *   effectiveAtk = (honingBaseAtk + equipmentBaseAtk + buffBaseAtkFlat)
+ *   effectiveAtk = (honingBaseAtk + equipmentBaseAtk + buffBaseAtkFlat + itemFlatAtk)
  *                  × (1 + totalAtkIncrease / 100)
  *
+ * @param {Object} [stats]     – stat object (defaults to CHARACTER_STATS)
+ * @param {Object} [equipment] – equipment items (defaults to EQUIPMENT_ITEMS_DEFAULT)
  * @returns {number} Effective ATK value
  */
-function getEffectiveAtk() {
-  const s = CHARACTER_STATS;
-  const flatAtk = s.honing.baseAtk + s.equipment.baseAtk + s.buff.baseAtkFlat;
+function getEffectiveAtk(stats, equipment) {
+  const s = stats || CHARACTER_STATS;
+  const eb = computeEquipBonuses(equipment);
+  const flatAtk = s.honing.baseAtk + s.equipment.baseAtk + s.buff.baseAtkFlat + eb.flatAtk;
   const totalAtkPct =
     s.mastery.atkIncrease +
     s.equipment.atkIncrease +
     s.buff.atkIncrease +
     s.buff.additionalAtkIncrease +
     s.bloodEnergy.atkIncrease +
-    s.promotion.atkIncrease;
+    s.promotion.atkIncrease +
+    eb.atkPct;
   return Math.round(flatAtk * (1 + totalAtkPct / 100));
 }
 
 /**
- * Returns the effective (total) HP.
+ * Returns the effective (total) HP, including active equipment-item bonuses.
  *
+ * @param {Object} [stats]     – stat object (defaults to CHARACTER_STATS)
+ * @param {Object} [equipment] – equipment items (defaults to EQUIPMENT_ITEMS_DEFAULT)
  * @returns {number} Effective HP value
  */
-function getEffectiveHp() {
-  const s = CHARACTER_STATS;
-  const flatHp = s.honing.baseHp + s.equipment.baseHp;
+function getEffectiveHp(stats, equipment) {
+  const s = stats || CHARACTER_STATS;
+  const eb = computeEquipBonuses(equipment);
+  const flatHp = s.honing.baseHp + s.equipment.baseHp + eb.flatHp;
   const totalHpPct =
     s.mastery.hpIncrease +
     s.equipment.hpIncrease +
     s.skillCollection.hpIncrease +
     s.promotion.hpIncrease +
-    s.monsterCollection.hpIncrease;
+    s.monsterCollection.hpIncrease +
+    eb.hpPct;
   return Math.round(flatHp * (1 + totalHpPct / 100));
 }
